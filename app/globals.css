@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f1ebdd;
+  --color-paper-deep: #e6dcc4;
+  --color-paper-dark: #221d16;
+  --color-ink: #211c15;
+  --color-ink-soft: #514738;
+  --color-riso-red: #c8431f;
+  --color-riso-blue: #274a70;
+  --color-mustard: #c68a22;
+  --color-sage: #75845f;
+
+  --font-tc: "Noto Serif TC", "Songti TC", "Georgia", serif;
+  --font-slab: "Zilla Slab", "Georgia", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --tracking-label: 0.22em;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-tc);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 紙張顆粒感 —— 固定在視窗上的一層雜訊 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--color-riso-red);
+  color: var(--color-paper);
+}
+
+/* 老派的字級標籤 */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.rule {
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent);
+}
+
+.hair-x > * + * {
+  border-left: 1px solid color-mix(in srgb, var(--color-ink) 16%, transparent);
+}
+
+/* 手撕膠帶 */
+.tape {
+  position: absolute;
+  background: color-mix(in srgb, var(--color-mustard) 55%, white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  opacity: 0.75;
+}
+.tape::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.35) 0 2px,
+    transparent 2px 6px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* 照片統一調成微微的暖色舊感 */
+.photo {
+  filter: sepia(0.16) saturate(0.9) contrast(1.02) brightness(0.99);
+}
+
+/* 固定式視差band */
+.band-fixed {
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+@media (hover: none) {
+  .band-fixed {
+    background-attachment: scroll;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: drift 34s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
